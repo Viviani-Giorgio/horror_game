@@ -8,7 +8,7 @@ import pygame
 WIDTH, HEIGHT = 1280, 720
 FPS = 60
 
-TILE_SIZE = 96
+TILE_SIZE = 120
 MAZE_ROWS = 31
 MAZE_COLS = 31
 
@@ -37,7 +37,7 @@ LIGHT_MIN = 90
 LIGHT_MAX = 520
 
 KEYS_REQUIRED = 3
-MONSTER_RADIUS = 20
+MONSTER_RADIUS = 12
 MONSTER_BASE_SPEED = 115.0
 MONSTER_MAX_MULT = 1.75
 MONSTER_PATH_INTERVAL = 0.33
@@ -456,7 +456,7 @@ class Escape3DGame:
 
     def start_game_from_menu(self):
         self.scene = "game"
-        self.show_minimap = self.menu_minimap_default
+        self.show_minimap = self.menu_minimap_default if self.current_difficulty_name() != "Difficile" else False
         self.reset_world(capture_mouse=True)
         self.set_status("Sopravvivi e raggiungi l'uscita", duration=2.5)
 
@@ -962,7 +962,10 @@ class Escape3DGame:
                     else:
                         self.enter_menu()
                 elif event.key == pygame.K_TAB and self.state == "playing":
-                    self.show_minimap = not self.show_minimap
+                    if self.current_difficulty_name() == "Difficile":
+                        self.set_status("Minimappa corrotta", 2.0)
+                    else:
+                        self.show_minimap = not self.show_minimap
                 elif event.key == pygame.K_f and self.state == "playing":
                     if self.battery > 0 or self.flashlight_on:
                         self.flashlight_on = not self.flashlight_on
